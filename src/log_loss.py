@@ -11,6 +11,7 @@ Created on 11 ago 2017
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+sns.set()
 
 def log_loss(y_hat, y):
     '''
@@ -20,7 +21,6 @@ def log_loss(y_hat, y):
     '''
     value = -(y*np.log(y_hat) + (1 - y)*np.log(1 - y_hat))
     return value
-
 
 y = 1
 y_hat = np.linspace(0, 1, int(1E3))
@@ -41,4 +41,3 @@ _ = plt.ylabel('log loss')
 _ = plt.suptitle("Log loss as a function of y_hat when the truth is 0")
 plt.margins(0.02)
 plt.show()
-
