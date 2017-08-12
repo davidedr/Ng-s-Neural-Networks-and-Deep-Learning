@@ -35,3 +35,21 @@ for i in range(len(a)):
 toc = time.time()
 
 print("Non vectorized dot product of two " + str(N) + "-sized vectors: " + str(1000*(toc - tic)) + " ms")
+
+'''
+    Comparison of summing elements of a vector
+'''
+print()
+tic = time.time()
+c3 = np.sum(a)
+toc = time.time()
+
+print("Vectorized sum of elements of " + str(N) + "-sized vector: " + str(1000*(toc - tic)) + " ms")
+
+tic = time.time()
+c4 = 0
+for i in range(len(a)):
+    c4 += a[i]
+toc = time.time()
+
+print("Non vectorized sum of elements of " + str(N) + "-sized vector: " + str(1000*(toc - tic)) + " ms")
