@@ -124,3 +124,25 @@ plt.imshow(img)
 plt.subplot(122)
 plt.imshow(crop)
 plt.show()
+
+# How to resize an image?
+print('Image resizing...')
+from scipy.misc import imresize
+filename = files[np.random.randint(0, len(files))]
+img = plt.imread(os.path.join(landing_foldername, filename))
+img_square = imcrop_tosquare(img)
+img_rsz = imresize(img_square, (64, 64))
+plt.figure(3)
+plt.subplot(141)
+plt.imshow(img)
+plt.subplot(142)
+plt.imshow(img_square)
+plt.subplot(143)
+plt.imshow(img_rsz)
+plt.subplot(144)
+plt.imshow(img_rsz, interpolation = 'nearest')
+plt.show()
+
+plt.figure()
+plt.imshow(img_rsz, interpolation = 'nearest')
+plt.show()
