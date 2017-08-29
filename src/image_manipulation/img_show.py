@@ -100,8 +100,27 @@ crop = imcrop_tosquare(img)
 plt.figure(2)
 plt.subplot(121)
 plt.imshow(img)
-
 plt.subplot(122)
 plt.imshow(crop)
+plt.show()
 
+# How to crop an image getting a definite % from the centre of the image?
+def imcrop(img, amt):
+    if amt <= 0 or amt >= 1:
+        return img
+    row_i = int(img.shape[0]*amt)//2
+    col_i = int(img.shape[1]*amt)//2
+    crop = img[row_i:-row_i, col_i:-col_i]
+    return crop
+
+print('Cropping an image to a definite %...')
+filename = files[np.random.randint(0, len(files))]
+img = plt.imread(os.path.join(landing_foldername, filename))
+crop = imcrop(img, 0.25)
+
+plt.figure(2)
+plt.subplot(121)
+plt.imshow(img)
+plt.subplot(122)
+plt.imshow(crop)
 plt.show()
