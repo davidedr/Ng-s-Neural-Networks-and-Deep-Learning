@@ -146,3 +146,10 @@ plt.show()
 plt.figure()
 plt.imshow(img_rsz, interpolation = 'nearest')
 plt.show()
+
+# How to compute the mean color of each pixel?
+print('Compute mean color of each pixel and display it in gray scale...')
+img_mean = np.mean(img_rsz, axis = 2)
+print(img_mean.shape)
+plt.imshow(img_mean, cmap='gray')
+plt.show()
