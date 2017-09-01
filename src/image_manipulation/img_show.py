@@ -4,26 +4,37 @@ Created on 29 ago 2017
 @author: davide
 '''
 
+'''
+    Demonstrates several procedures related to image manipulation
+        Image reading form disk
+        Plotting
+        Plotting some RGB channels only
+        Getting image properties
+        Cropping to square
+        Cropping to eliminate background
+        Resize
+        Normalize
+'''
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
+# How read an image and how to plot it?
+print('Image loading and plotting...')
 landing_foldername = 'img_align_celeba'
 img_index = 1
 f = '000%03d.jpg' % img_index
 image_filename = os.path.join(landing_foldername, f)
-print("image_filename: '" + image_filename + "'")
+print("\timage_filename: '" + image_filename + "'")
 
-# How to plot an image?
-print('Image plotting...')
 img = mpimg.imread(image_filename)
 plt.imshow(img)
 plt.show()
 
 # How to get the shape of an image?
 print('Getting image shape...')
-print("img.shape: " + str(img.shape) + ".")
+print("\timg.shape: " + str(img.shape) + ".")
 
 # How to make multiple plots?
 # How to plot the different channels of an  image?
@@ -42,20 +53,20 @@ plt.show()
 
 # How to get image elements type and range?
 print('Getting image elements type and range...')
-print("min: " + str(np.min(img)) + ", max: " + str(np.max(img)) + ".")
-print("img.dtype: " + str(img.dtype) + ".")
+print("\tmin: " + str(np.min(img)) + ", max: " + str(np.max(img)) + ".")
+print("\timg.dtype: " + str(img.dtype) + ".")
 
 img.astype(np.float32)
-print("img.dtype: " + str(img.dtype) + ".")
+print("\timg.dtype: " + str(img.dtype) + ".")
 
 # How to choose an image at random?
 print('Choosing an image at random...')
 files = [file_i for file_i in os.listdir(landing_foldername)
         if '.jpg' in file_i or '.png' in file_i or '.jpeg' in file_i]
 
-print(np.random.randint(0, len(files)))
-print(np.random.randint(0, len(files)))
-print(np.random.randint(0, len(files)))
+print("\t" + str(np.random.randint(0, len(files))))
+print("\t" + str(np.random.randint(0, len(files))))
+print("\t" + str(np.random.randint(0, len(files))))
 
 # ok now stop kidding:
 filename = files[np.random.randint(0, len(files))]
@@ -72,8 +83,8 @@ print("Using plot_imqage:")
 plot_image(files[np.random.randint(0, len(files))])
 
 # How to crop an image to square dimensions?
-def imcrop_tosquare(img):
-    print(img.shape)
+def imcrop_tosquare(img, DEBUG = 0):
+    print("\timg.shape: " + str(img.shape))
     if img.shape[0] > img.shape[1]:
         extra = img.shape[0] - img.shape[1]
         if extra % 2 == 0:
@@ -89,7 +100,9 @@ def imcrop_tosquare(img):
     else:
         crop = img
         
-    print('img.shape: ' + str(img.shape) + ', crop.shape: ' + str(crop.shape) + '.')
+    
+    if DEBUG > 0:
+        print('\timg.shape: ' + str(img.shape) + ', crop.shape: ' + str(crop.shape) + '.')
     return  crop
 
 print('Cropping an image to square size...')
@@ -128,6 +141,7 @@ plt.show()
 # How to resize an image?
 print('Image resizing...')
 from scipy.misc import imresize
+
 filename = files[np.random.randint(0, len(files))]
 img = plt.imread(os.path.join(landing_foldername, filename))
 img_square = imcrop_tosquare(img)
@@ -150,6 +164,33 @@ plt.show()
 # How to compute the mean color of each pixel?
 print('Compute mean color of each pixel and display it in gray scale...')
 img_mean = np.mean(img_rsz, axis = 2)
-print(img_mean.shape)
+print("\t" + str(img_mean.shape))
 plt.imshow(img_mean, cmap='gray')
 plt.show()
+
+# How to normalize a set of images?
+print("Normalize a set of images: crop to square to remove the longer edge, crop to remove some background, resize to 64 x 64...")
+to_be_shown_filename = files[np.random.randint(0, len(files))] 
+imgs = []
+for filename in files:
+    img = plt.imread(os.path.join(landing_foldername, filename))
+    
+    img_square = imcrop_tosquare(img)
+    img_crop = imcrop(img_square, 0.2)
+    img_resize = imresize(img_crop, (64, 64))
+    
+    imgs.append(img_resize)
+    if filename == to_be_shown_filename:
+        print("\tShow an example: '" + filename + "'...")
+        plt.figure()
+        plt.subplot(141)
+        plt.imshow(img)
+        plt.subplot(142)
+        plt.imshow(img_square)
+        plt.subplot(143)
+        plt.imshow(img_crop)
+        plt.subplot(144)
+        plt.imshow(img_resize)
+        plt.show()
+        
+print('Done')
