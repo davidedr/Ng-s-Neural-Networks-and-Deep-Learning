@@ -54,3 +54,32 @@ plt.title('Std dev image')
 plt.imshow(img_stddev.astype(np.uint8))
 plt.show()
 
+# Histogram of R, G, B for the n-th image
+n = 1
+plt.figure()
+plt.subplot(141)
+plt.imshow(imgs[n])
+plt.subplot(142)
+plt.hist(imgs[n][:, :, 0])
+plt.subplot(143)
+plt.hist(imgs[n][:, :, 1])
+plt.subplot(144)
+plt.hist(imgs[n][:, :, 2])
+plt.show()
+
+plt.figure()
+kwargs = dict(histtype = 'stepfilled', alpha = 0.3)
+plt.hist(imgs[n][:, :, 0], **kwargs)
+plt.hist(imgs[n][:, :, 1], **kwargs)
+plt.hist(imgs[n][:, :, 2], **kwargs)
+plt.show()
+
+import seaborn as sns
+sns.set(color_codes=True)
+sns.distplot(imgs[n][:, :, 0].ravel())
+plt.show()
+
+colours = ('r', 'g', 'b')
+for i, colour in enumerate(colours):
+    sns.distplot(imgs[n][:, :, i].ravel(), color = colour)
+plt.show()
