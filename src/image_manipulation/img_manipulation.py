@@ -68,18 +68,31 @@ plt.hist(imgs[n][:, :, 2])
 plt.show()
 
 plt.figure()
-kwargs = dict(histtype = 'stepfilled', alpha = 0.3)
-plt.hist(imgs[n][:, :, 0], **kwargs)
-plt.hist(imgs[n][:, :, 1], **kwargs)
-plt.hist(imgs[n][:, :, 2], **kwargs)
+kwargs = dict(histtype = 'stepfilled', alpha = 0.3, bins = 255)
+plt.hist(imgs[n][:, :, 0].ravel(), **kwargs)
+plt.hist(imgs[n][:, :, 1].ravel(), **kwargs)
+plt.hist(imgs[n][:, :, 2].ravel(), **kwargs)
+plt.title("RGB histogram of image " + str(n) + ", " + files[n] + ".\n(matplotlib)")
 plt.show()
 
 import seaborn as sns
 sns.set(color_codes=True)
 sns.distplot(imgs[n][:, :, 0].ravel())
+plt.title("Red histogram of image " + str(n) + ", " + files[n] + ".\n(seaborn)")
 plt.show()
 
 colours = ('r', 'g', 'b')
 for i, colour in enumerate(colours):
     sns.distplot(imgs[n][:, :, i].ravel(), color = colour)
+plt.title("RGB histogram of image " + str(n) + ", " + files[n] + ".\n(seaborn)")
+plt.show()
+
+plt.hist(np.array(imgs).ravel(), 255)
+plt.title('Histogram of all images: np.array(imgs).ravel()\n(matplotlib)')
+plt.show()
+
+colours = ('r', 'g', 'b')
+for i, colour in enumerate(colours):
+    sns.distplot(img_mean[:, :, i].ravel(), color = colour)
+plt.title("RGB histogram of MEAN image\n(seaborn)")
 plt.show()
