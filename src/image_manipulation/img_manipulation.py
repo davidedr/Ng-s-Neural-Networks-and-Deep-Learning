@@ -17,7 +17,7 @@ plt.style.use('ggplot')
 from libs import utils
 
 files = utils.get_celeb_files() 
-n = 50
+n = list(utils.sample_without_replacement(len(files), 1))[0]
 print("Read and plot image n. " + str(n) + ", " + files[n] + "...")
 img = plt.imread(files[n])
 print('image no. ' + str(n) + ', ' + files[n] + ', has shape: ' + str(img.shape) + '.')
@@ -40,11 +40,6 @@ plt.show()
 
 print("Read all images....")
 imgs = utils.get_celeb_imgs()
-n = list(utils.sample_without_replacement(len(files), 1))[0]
-plt.figure()
-plt.imshow(imgs[n])
-plt.title("Example image: " + str(n) + ", " + files[n])
-plt.show()
 
 # Turn into batch array
 data = np.array(imgs)
@@ -65,7 +60,6 @@ plt.show()
 
 # Histogram of R, G, B for the n-th image
 print("Compute and plot histograms and estimated densities...")
-n = list(utils.sample_without_replacement(len(files), 1))[0]
 plt.figure()
 plt.subplot(141)
 plt.imshow(imgs[n])
@@ -109,22 +103,31 @@ plt.show()
 
 # Images normalization
 plt.figure()
-plt.subplot(321)
+plt.subplot(421)
 plt.imshow(img[n])
-plt.subplot(322)
+plt.subplot(422)
 sns.distplot(img[n].ravel())
 plt.title('Image'+ str(n) + ", " + files[n])
 
-plt.subplot(323)
+plt.subplot(423)
 plt.imshow(img_mean.astype(np.uint8))
-plt.subplot(324)
+plt.subplot(424)
 sns.distplot(img_mean.astype(np.uint8).ravel())
 plt.title('Mean image')
 
 img_nomean = img[n] - img_mean
-plt.subplot(325)
+plt.subplot(425)
 plt.imshow(img_nomean.astype(np.uint8))
-plt.subplot(326)
+plt.subplot(426)
 sns.distplot(img_nomean.astype(np.uint8).ravel())
 plt.title('Image  - mean image')
+
+img_normal = img_mean/img_stddev
+plt.subplot(427)
+plt.imshow(img_normal.astype(np.uint8))
+plt.subplot(428)
+sns.distplot(img_normal.astype(np.uint8).ravel())
+plt.title('Normalized image')
+
 plt.show()
+print('Done.')
