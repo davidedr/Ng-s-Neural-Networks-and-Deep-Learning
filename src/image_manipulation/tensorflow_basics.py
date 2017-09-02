@@ -67,3 +67,15 @@ s.close()
 %matplotlib inline
 import matplotlib.pyplot as plt
 plt.plot(result)
+
+print('Generate and plot a 2D Gaussian...')
+ksize = z.get_shape().as_list()[0]
+# Clever way to get a 2-D Gaussian: multiply a 1 x k vectot by its traspose!
+z_2d = tf.matmul(tf.reshape(z, [ksize, 1]), tf.reshape(z, [1, ksize]))
+
+s = tf.Session()
+result = z_2d.eval(session = s)
+s.close()
+
+# A clever way to plot it: see it as an image!
+plt.imshow(result)
