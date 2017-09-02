@@ -199,7 +199,7 @@ for filename in files:
 # N = number of images in the batch
 # H = height or number of rows in each image
 # W = width or number of cols in each image
-# C = number of channels (colors)in the image (RGB: 3, Grayscale: 1)
+# C = number of channels (colors) in the image (RGB: 3, grayscale: 1)
 #
 # batch size = N x H x W x C
 print("Converting to a batch...")
