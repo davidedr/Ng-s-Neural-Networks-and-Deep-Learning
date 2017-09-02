@@ -3,6 +3,7 @@ Created on 29 ago 2017
 
 @author: davide
 '''
+from sklearn.datasets.lfw import _load_imgs
 
 '''
     Demonstrates several procedures related to image manipulation
@@ -192,5 +193,22 @@ for filename in files:
         plt.subplot(144)
         plt.imshow(img_resize)
         plt.show()
-        
-print('Done')
+
+# How to deal with the batch dimension N?
+# Convert an array of images to a single array N x H x W x C
+# N = number of images in the batch
+# H = height or number of rows in each image
+# W = width or number of cols in each image
+# C = number of channels (colors)in the image (RGB: 3, Grayscale: 1)
+#
+# batch size = N x H x W x C
+print("Converting to a batch...")
+print("\tsingle image shape: " + str(imgs[0].shape) + ".")
+print("\tnumber of images: " + str(len(imgs)) + ".")
+data = np.array(imgs)
+print("\tbatch size: " + str(data.shape) + ".")
+print()
+print("\talternative way...")
+data = np.concatenate([img_i[np.newaxis] for img_i in imgs], axis=0)
+print("\tbatch size: " + str(data.shape) + ".")
+print('Done')   
