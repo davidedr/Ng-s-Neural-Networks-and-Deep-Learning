@@ -56,3 +56,21 @@ def sample_without_replacement(N, r):
 
 if __name__ == "__main__":
     print(list(sample_without_replacement(100, 10)))
+    '''
+        TODO: check numbers distribution in given list. Should be uniform
+    '''
+    
+import matplotlib.pyplot as plt
+
+def get_celeb_imgs(N = 100, foldername = 'img_align_celeba', overwrite = False, DEBUG = 0, r = 10, random = False):
+    '''
+        
+    '''
+    files = get_celeb_files(N, foldername, overwrite, DEBUG)
+    imgs = [plt.imread(filename_pathcomplete) for filename_pathcomplete in files]
+    return imgs
+
+if __name__ == "__main__":
+    imgs = get_celeb_imgs()
+    print(len(imgs))
+    print(imgs[0].shape)
