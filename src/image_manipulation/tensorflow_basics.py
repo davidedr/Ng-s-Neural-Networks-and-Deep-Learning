@@ -51,3 +51,19 @@ s = tf.Session()
 computed_x = x.eval(session = s)
 print(computed_x)
 s.close()
+
+print('Generate and plot a Gaussian...')
+# Keep in mind that in tf.pow(x, y) BOTH arguments MUST be of the same type!
+# Both integers, both float, ...
+mean = 0.0   #float!
+stddev = 1.0 #float!
+z = (tf.exp(tf.negative(tf.pow(x - mean, 2.0) /
+                   (2.0 * tf.pow(stddev, 2.0)))) *
+     (1.0 / (stddev * tf.sqrt(2.0 * 3.1415))))
+s = tf.Session()
+result = z.eval(session = s)
+s.close()
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.plot(result)
