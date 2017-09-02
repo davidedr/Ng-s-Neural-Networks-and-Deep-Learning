@@ -35,9 +35,24 @@ def get_celeb_files(N = 100, foldername = 'img_align_celeba', overwrite = False,
         
     files = [os.path.join(foldername, filename_i) for filename_i in os.listdir(foldername) if '.jpg' in filename_i]
     return files
-
-'''
-    Test
-'''
+        
 if __name__ == "__main__":
     get_celeb_files(10, DEBUG = 1)
+    
+import random
+def sample_without_replacement(N, r):
+    '''
+        Generate r randomly chosen, sorted integers in [1, N]
+    '''
+    rand = random.random
+    pop = N
+    for samp in range(r, 0, -1):
+        cum_prob = 1.0
+        x = rand()
+        while x < cum_prob:
+            cum_prob -= cum_prob*samp/pop
+            pop -= 1
+        yield (N - pop - 1) + 1
+
+if __name__ == "__main__":
+    print(list(sample_without_replacement(100, 10)))
