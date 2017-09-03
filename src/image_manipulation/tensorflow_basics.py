@@ -128,3 +128,39 @@ print('img_convolved.shape: ' + str(img_convolved.shape))
 plt.figure()
 plt.imshow(img_convolved[0, :, :, 0], cmap = 'gray')
 plt.show()
+
+#
+# Gabor kernel: Gaussian kernel modulated with a Sine wave
+#
+xs = tf.linspace(-3.0, 3.0, ksize)
+ys = tf.sin(xs)
+
+plt.figure()
+s = tf.Session()
+ys = ys.eval(session = s)
+s.close()
+
+plt.plot(ys)
+plt.show()
+
+ys = tf.reshape(ys, [ksize, 1])
+ones = tf.ones((1, ksize))
+wave = tf.matmul(ys, ones)
+
+s = tf.Session()
+wave = wave.eval(session = s)
+s.close()
+
+plt.figure()
+plt.imshow(wave, cmap = 'gray')
+plt.show()
+
+gabor_kernel = tf.multiply(wave, z_2d)
+
+s = tf.Session()
+gabor_kernel = gabor_kernel.eval(session = s)
+s.close()
+
+plt.figure()
+plt.imshow(gabor_kernel, cmap = 'gray')
+plt.show()
