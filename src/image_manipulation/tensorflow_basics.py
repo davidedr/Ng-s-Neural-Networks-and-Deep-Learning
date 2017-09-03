@@ -210,3 +210,18 @@ s.close()
 plt.figure()
 plt.imshow(res, cmap = 'gray')
 plt.show()
+
+# Once the TF graph is set up, we can repeat the computation using different parameters
+
+s = tf.Session()
+res = convolved_img.eval(session = s, feed_dict={
+    img: data.camera(),
+    mean: 0.0,
+    sigma: 0.5,
+    ksize: 32
+  })
+s.close()
+
+plt.figure()
+plt.imshow(res, cmap = 'gray')
+plt.show()
