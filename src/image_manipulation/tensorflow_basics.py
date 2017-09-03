@@ -164,3 +164,49 @@ s.close()
 plt.figure()
 plt.imshow(gabor_kernel, cmap = 'gray')
 plt.show()
+
+#
+# Computing and using the Gabor kernel via Tensorflow placeholders
+#
+img = tf.placeholder(tf.float32, shape = [None, None], name = 'img')
+
+# Add a channel H x W -->> H x W x 1
+img_3d = tf.expand_dims(img, 2)
+print('img_3d.get_shape: ' + str(img_3d.get_shape()))
+
+# H x W x 1 -->> 1 x H x W x 1
+img_4d = tf.expand_dims(img_3d, 0)
+print('img_4d.get_shape: ' + str(img_4d.get_shape()))
+
+# Placeholders for the Gabor kernel parameters
+mean = tf.placeholder(tf.float32, name = 'mean')
+sigma = tf.placeholder(tf.float32, name = 'sigma')
+ksize = tf.placeholder(tf.int32, name = 'ksize')
+                  
+# Generate the tensor flow graph to compute the convolution w/ the Gabor kernel
+x = tf.linspace(-3.0, 3.0, ksize)
+z = (tf.exp(tf.negative(tf.pow(x - mean, 2.0) /
+                   (2.0 * tf.pow(sigma, 2.0)))) *
+      (1.0 / (sigma * tf.sqrt(2.0 * 3.1415))))
+z_2d = tf.matmul(
+  tf.reshape(z, tf.stack([ksize, 1])),
+  tf.reshape(z, tf.stack([1, ksize])))
+ys = tf.sin(x)
+ys = tf.reshape(ys, tf.stack([ksize, 1]))
+ones = tf.ones(tf.stack([1, ksize]))
+wave = tf.matmul(ys, ones)
+gabor = tf.multiply(wave, z_2d)
+gabor_4d = tf.reshape(gabor, tf.stack([ksize, ksize, 1, 1]))
+
+# And finally, convolve the two:
+convolved = tf.nn.conv2d(img_4d, gabor_4d, strides=[1, 1, 1, 1], padding='SAME', name='convolved')
+convolved_img = convolved[0, :, :, 0]
+
+# Perform actual computation feeding the placeholders' values
+s = tf.Session()
+res = convolved_img.eval(session = s, feed_dict = { img: data.camera(), mean: 0.0, sigma: 1.0, ksize: 100 })
+s.close()
+
+plt.figure()
+plt.imshow(res, cmap = 'gray')
+plt.show()
